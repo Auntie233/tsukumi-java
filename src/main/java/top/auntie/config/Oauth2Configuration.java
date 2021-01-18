@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -52,7 +53,7 @@ public class Oauth2Configuration extends AuthorizationServerConfigurerAdapter {
     private RandomValueAuthorizationCodeServices randomValueAuthorizationCodeServices;
 
     @Autowired
-    private WebResponseExceptionTranslator webResponseExceptionTranslator;
+    private WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
