@@ -23,7 +23,7 @@ import javax.annotation.Resource;
 
 @Configuration
 @Import(DefaultPasswordConfig.class)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
