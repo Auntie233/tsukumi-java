@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 @Table(name = "oauth_code")
 public class OauthCode extends BaseEntity {
+
+    @Id
     private String code;
 
     private byte[] authentication;

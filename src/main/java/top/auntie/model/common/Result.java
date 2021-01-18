@@ -9,16 +9,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Result<T> {
 
-    private String code;
+    private int code;
     private String msg;
     private T data;
 
     public static <T> Result<T> success(T data) {
-        return new Result<>("000", null, data);
+        return new Result<>(0,null, data);
     }
 
     public static <T> Result<T> failed(String message) {
-        return new Result<>("999", message, null);
+        return new Result<>(-1, message, null);
+    }
+
+    public static <T> Result<T> failed(int code, String message) {
+        return new Result<>(code, message, null);
     }
 
 }

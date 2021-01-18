@@ -5,6 +5,8 @@ import javax.persistence.*;
 
 @Table(name = "oauth_approvals")
 public class OauthApprovals extends BaseEntity {
+
+    @Id
     private String userid;
 
     private String clientid;

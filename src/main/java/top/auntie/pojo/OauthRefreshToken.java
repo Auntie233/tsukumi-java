@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 @Table(name = "oauth_refresh_token")
 public class OauthRefreshToken extends BaseEntity {
+
+    @Id
     @Column(name = "token_id")
     private String tokenId;
 
