@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import top.auntie.util.ResponseUtil;
 
 import javax.servlet.ServletException;
@@ -42,7 +43,7 @@ public class SecurityHandlerConfig {
     @Bean
     public LogoutHandler logoutHandler() {
         // todo 登出
-        return null;
+        return new SecurityContextLogoutHandler();
     }
 
     @Bean
