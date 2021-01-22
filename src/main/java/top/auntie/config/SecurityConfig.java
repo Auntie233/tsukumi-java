@@ -12,16 +12,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import top.auntie.properites.SecurityProperties;
 
 import javax.annotation.Resource;
 
 @Configuration
-@Import(DefaultPasswordConfig.class)
+@Import({DefaultPasswordConfig.class, SecurityProperties.class})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -42,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private LogoutHandler logoutHandler;
 
+    @Resource
+    private SecurityProperties securityProperties;
+
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -51,18 +57,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("")
+                .antMatchers(securityProperties.getIgnoreUrls())
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("")
+//                .loginPage("")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
                 .logout()
-                .logoutUrl("")
-                .logoutSuccessUrl("")
+//                .logoutUrl("")
+//                .logoutSuccessUrl("")
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
                 .addLogoutHandler(logoutHandler)
                 .clearAuthentication(true)
@@ -82,6 +88,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
+
+    @Bean
+    public RandomValueAuthorizationCodeServices randomValueAuthorizationCodeServices() {
+        return new InMemoryAuthorizationCodeServices();
     }
 
 }

@@ -4,3 +4,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: Boluo123
+
+encrypt:
+  key-store:
+    location: classpath:auntie-tsukumi.jks
+    secret: Boluo123
+    alias: auntie-tsukumi
+
+security:
+  ignore-urls:
+    - /private/grumbles
