@@ -14,6 +14,10 @@
     <result column="del_flag" jdbcType="BIT" property="delFlag" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="mode" jdbcType="VARCHAR" property="mode" />
+    <result column="islike" jdbcType="INTEGER" property="islike" />
+    <result column="repost" jdbcType="INTEGER" property="repost" />
+    <result column="reply_post" jdbcType="INTEGER" property="replyPost" />
+    <result column="repost_id" jdbcType="INTEGER" property="repostId" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
 </mapper>

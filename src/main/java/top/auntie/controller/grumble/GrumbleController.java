@@ -8,8 +8,10 @@ import top.auntie.model.dto.GrumbleSearchDto;
 import top.auntie.model.vo.GrumbleVo;
 import top.auntie.service.GrumbleService;
 
+import java.util.Date;
+
 @RestController
-public class GrumbleController {
+public class GrumbleController extends BaseController {
 
     private final GrumbleService grumbleService;
 
@@ -20,6 +22,7 @@ public class GrumbleController {
     @PostMapping("/{type}/grumble")
     public Result postGrumble(@RequestBody GrumbleDto grumbleDto, @PathVariable("type") String type) {
         grumbleDto.setType(type);
+        grumbleDto.setCreateTime(new Date());
         grumbleService.postGrumble(grumbleDto);
         return Result.success(grumbleDto);
     }

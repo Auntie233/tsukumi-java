@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -19,6 +21,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import top.auntie.auth.UserPassAuthenticationProvider;
+import top.auntie.auth.UserPassAuthenticationSecurityConfig;
 import top.auntie.properites.SecurityProperties;
 
 import javax.annotation.Resource;
@@ -48,10 +52,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private UserPassAuthenticationSecurityConfig userPassAuthenticationSecurityConfig;
+
     @Bean
     @Override
     protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+        return super.authenticationManagerBean();
     }
 
     @Override
@@ -73,7 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addLogoutHandler(logoutHandler)
                 .clearAuthentication(true)
                 .and()
-//                .apply()
+                .apply(userPassAuthenticationSecurityConfig)
+                .and()
                 .csrf().disable()
                 .headers().frameOptions().disable().cacheControl();
 

@@ -32,6 +32,28 @@ public class GrumbleInfo extends BaseEntity {
      */
     private String mode;
 
+    /**
+     * 赞
+     */
+    private Integer islike;
+
+    /**
+     * 转发数
+     */
+    private Integer repost;
+
+    /**
+     * 被评论id-该条消息为评论时存在
+     */
+    @Column(name = "reply_post")
+    private Integer replyPost;
+
+    /**
+     * 被转发id
+     */
+    @Column(name = "repost_id")
+    private Integer repostId;
+
     private String content;
 
     /**
@@ -162,6 +184,68 @@ public class GrumbleInfo extends BaseEntity {
      */
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    public Integer getIslike() {
+        return islike;
+    }
+
+    public void setIslike(Integer islike) {
+        this.islike = islike;
+    }
+
+    /**
+     * 获取转发数
+     *
+     * @return repost - 转发数
+     */
+    public Integer getRepost() {
+        return repost;
+    }
+
+    /**
+     * 设置转发数
+     *
+     * @param repost 转发数
+     */
+    public void setRepost(Integer repost) {
+        this.repost = repost;
+    }
+
+    /**
+     * 获取被评论id-该条消息为评论时存在
+     *
+     * @return reply_post - 被评论id-该条消息为评论时存在
+     */
+    public Integer getReplyPost() {
+        return replyPost;
+    }
+
+    /**
+     * 设置被评论id-该条消息为评论时存在
+     *
+     * @param replyPost 被评论id-该条消息为评论时存在
+     */
+    public void setReplyPost(Integer replyPost) {
+        this.replyPost = replyPost;
+    }
+
+    /**
+     * 获取被转发id
+     *
+     * @return repost_id - 被转发id
+     */
+    public Integer getRepostId() {
+        return repostId;
+    }
+
+    /**
+     * 设置被转发id
+     *
+     * @param repostId 被转发id
+     */
+    public void setRepostId(Integer repostId) {
+        this.repostId = repostId;
     }
 
     /**

@@ -1,5 +1,6 @@
 package top.auntie.config;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +16,7 @@ public class DefaultPasswordConfig {
         return new PasswordEncoder() {
             @Override
             public String encode(CharSequence charSequence) {
-                return Md5Crypt.md5Crypt(charSequence.toString().getBytes(StandardCharsets.UTF_8), "Auntie@tai");
+                return DigestUtils.md5Hex(charSequence.toString()+"Auntie@tai");
             }
 
             @Override

@@ -17,6 +17,10 @@ public class Result<T> {
         return new Result<>(0,null, data);
     }
 
+    public static <T> Result<T> success() {
+        return new Result<>(0,null, null);
+    }
+
     public static <T> Result<T> failed(String message) {
         return new Result<>(-1, message, null);
     }

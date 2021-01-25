@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.code.RandomValueAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
@@ -49,13 +50,13 @@ public class Oauth2Configuration extends AuthorizationServerConfigurerAdapter {
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     @Autowired
-    private ClientDetailsService clientDetailsService;
-
-    @Autowired
     private RandomValueAuthorizationCodeServices randomValueAuthorizationCodeServices;
 
     @Autowired
     private WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator;
+
+    @Resource(name = "jdbcClientService")
+    private ClientDetailsService clientDetailsService;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
