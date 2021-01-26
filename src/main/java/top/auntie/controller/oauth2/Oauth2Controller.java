@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +57,9 @@ public class Oauth2Controller {
 
     @Autowired
     private ClientDetailsService clientDetailsService;
+
+    @Autowired
+    private TokenStore tokenStore;
 
     @PostMapping("/oauth/user/token")
     public void getUserTokenInfo(@RequestBody UserPassDto userPassDto,
