@@ -164,3 +164,6 @@ CREATE TABLE `group_grumble` (
 INSERT INTO tsukumi.dic_info (id, code, name, type, p_code, del_flag, attribute_1, attribute_2, attribute_3, create_time, update_time) VALUES (1, 'anonymous', '匿名', 'grumbleType', '', false, '', '', '', '2021-01-13 03:55:18', '2021-01-13 03:55:18');
 INSERT INTO tsukumi.dic_info (id, code, name, type, p_code, del_flag, attribute_1, attribute_2, attribute_3, create_time, update_time) VALUES (2, 'private', '私人', 'grumbleType', '', false, '', '', '', '2021-01-13 03:57:22', '2021-01-13 03:57:22');
 INSERT INTO tsukumi.dic_info (id, code, name, type, p_code, del_flag, attribute_1, attribute_2, attribute_3, create_time, update_time) VALUES (3, 'public', '广场', 'grumbleType', '', false, '', '', '', '2021-01-13 03:57:29', '2021-01-13 03:57:29');
+INSERT INTO tsukumi.oauth_client_details
+(client_id, resource_ids, client_secret, `scope`, authorized_grant_types, web_server_redirect_uri, authorities, access_token_validity, refresh_token_validity, additional_information, autoapprove)
+VALUES('tsukumi', NULL, 'a016007a66d630137bb734eab94b6ae2', 'all', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
