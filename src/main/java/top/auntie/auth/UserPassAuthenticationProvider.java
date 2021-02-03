@@ -39,12 +39,23 @@ public class UserPassAuthenticationProvider implements AuthenticationProvider {
         }
         Collection<OAuth2AccessToken> accessTokens = this.tokenStore.findTokensByClientIdAndUserName(CLIENT_ID, username);
         for (OAuth2AccessToken token: accessTokens) {
-
+            revoke(token.getValue());
         }
         UserPassAuthenticationToken authenticationToken = new UserPassAuthenticationToken(userDetails,
                 null, userDetails.getAuthorities());
         authenticationToken.setDetails(authentication.getDetails());
         return authenticationToken;
+    }
+
+    private void revoke(String value) {
+        OAuth2AccessToken accessToken = this.tokenStore.readAccessToken(value);
+        if (accessToken == null) {
+            return;
+        }
+        if (accessToken.getRefreshToken() != null) {
+            this.tokenStore.removeRefreshToken(accessToken.getRefreshToken());
+        }
+        this.tokenStore.removeAccessToken(accessToken);
     }
 
     @Override
