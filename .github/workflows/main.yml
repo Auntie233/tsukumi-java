@@ -41,23 +41,10 @@ jobs:
         run: apt-get install spawn
 
       - name: send jar
-        run: |
-          spawn sftp root@124.71.86.27:target/tsukumi-1.0-SNAPSHOT.jar
-          expect {
-            "(yes/no)?"
-              {
-                send "yes\n"
-                expect "*password:" { send "Boluo123\n"}
-              }
-              "*assword:"
-              {
-                send "Boluo123\n"
-              }
-          }
-          expect "Changing to:*"
-          send "put tsukumi-1.0-SNAPSHOT.jar\n"
-          expect "100%"
-          send "exit\n"
-          expect eof
-
+        run:
+        uses: contention/rsync-deployments@v1.0.0
+          env:
+            DEPLOY_KEY: ${{ secrets.MY_V2_SERVER_PRIVATE_KEY }}
+          with:
+            args: "-avzr --delete ${{ env.MY_V2_USER }}@${{ env.MY_V2_IP }}:~/testParcelActions/"
 
