@@ -37,8 +37,8 @@ jobs:
       - name: package
         run: mvn package -P dev
 
-      - name: install plugin
-        run: apt-get install spawn
+#       - name: install plugin
+#         run: apt-get install spawn
 
       - name: send jar
         uses: contention/rsync-deployments@v1.0.0
