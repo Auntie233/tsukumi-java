@@ -41,10 +41,9 @@ jobs:
         run: apt-get install spawn
 
       - name: send jar
-        run:
         uses: contention/rsync-deployments@v1.0.0
-          env:
-            DEPLOY_KEY: ${{ secrets.MY_V2_SERVER_PRIVATE_KEY }}
-          with:
-            args: "-avzr --delete ${{ env.MY_V2_USER }}@${{ env.MY_V2_IP }}:~/testParcelActions/"
+        env:
+          DEPLOY_KEY: ${{ secrets.MY_V2_SERVER_PRIVATE_KEY }}
+        with:
+          args: "-avzr --delete ${{ env.MY_V2_USER }}@${{ env.MY_V2_IP }}:~/testParcelActions/"
 
