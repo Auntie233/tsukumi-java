@@ -35,7 +35,7 @@ jobs:
           echo test, and deploy your project.
 
       - name: package
-        run: mvn package dev
+        run: mvn package -pdev
 
       - name: send jar
         run: |
