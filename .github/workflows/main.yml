@@ -24,7 +24,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
@@ -34,3 +33,28 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: package
+        run: mvn package dev
+
+      - name: send jar
+        run: |
+          spawn sftp root@124.71.86.27:target/tsukumi-1.0-SNAPSHOT.jar
+          expect {
+            "(yes/no)?"
+              {
+                send "yes\n"
+                expect "*password:" { send "Boluo123\n"}
+              }
+              "*assword:"
+              {
+                send "Boluo123\n"
+              }
+          }
+          expect "Changing to:*"
+          send "put tsukumi-1.0-SNAPSHOT.jar\n"
+          expect "100%"
+          send "exit\n"
+          expect eof
+
+
