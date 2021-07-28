@@ -35,7 +35,7 @@ jobs:
           echo test, and deploy your project.
 
       - name: package
-        run: mvn package -pdev
+        run: mvn package -P dev
 
       - name: install plugin
         run: apt-get install spawn
