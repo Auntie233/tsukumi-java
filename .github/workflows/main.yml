@@ -37,12 +37,14 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
       
-      - name: show list
-        run: ls -a
-
       - name: package
         run: mvn package -P dev
 
+      - name: show list
+        run: |
+          ls -a
+          cd target
+          ls -a
 #       - name: install plugin
 #         run: apt-get install spawn
 
