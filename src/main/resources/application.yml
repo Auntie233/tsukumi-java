@@ -13,7 +13,5 @@ encrypt:
 
 security:
   ignore-urls:
-    - /private/grumbles
-    - /private/grumble
     - /user/register
     - /oauth/**

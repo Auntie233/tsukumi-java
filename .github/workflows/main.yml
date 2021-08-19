@@ -24,7 +24,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world!
@@ -34,3 +33,17 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: package
+        run: mvn package -P dev
+
+      - name: install plugin
+        run: apt-get install spawn
+
+      - name: send jar
+        uses: contention/rsync-deployments@v1.0.0
+        env:
+          DEPLOY_KEY: ${{ secrets.MY_V2_SERVER_PRIVATE_KEY }}
+        with:
+          args: "-avzr --delete ${{ env.MY_V2_USER }}@${{ env.MY_V2_IP }}:~/testParcelActions/"
+
