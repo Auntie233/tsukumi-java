@@ -1,0 +1,29 @@
+version: '2.2'
+services:
+  mysql:
+    restart: always
+    image: mysql:8.0
+    container_name: mysql
+    privileged: true
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Aa123456
+    volumes:
+      - /data/docker/mysql/conf:/etc/mysql/conf.d
+      - /data/docker/mysql/logs:/logs:rw
+      - /data/docker/mysql/data:/var/lib/mysql:rw
+  elasticsearch:
+    restart: always
+    image: elasticsearch:7.14.0
+    container_name: elasticsearch
+    privileged: true
+    environment:
+      - ES_JAVA_OPTS=-Xms1024m -Xmx1024m -Xmn512m
+    volumes:
+      - /data/docker/elk/elasticsearch/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /data/docker/elk/elasticsearch/data:/usr/share/elasticsearch/data:rw
+      - /data/docker/elk/elasticsearch/logs:/usr/share/elasticsearch/logs:rw
+    ports:
+    - "9200:9200"
+    - "9300:9300"
