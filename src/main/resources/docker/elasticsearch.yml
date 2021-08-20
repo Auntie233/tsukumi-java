@@ -1,0 +1,49 @@
+cluster.name: elasticsearch
+  # 配置的集群名称，默认是elasticsearch，es服务会通过广播方式自动连接在同一网段下的es服务，通过多播方式进行通信，同一网段下可以有多个集群，通过集群名称这个属性来区分不同的集群
+
+node.name: "Franz Kafka"
+  # 当前配置所在机器的节点名
+
+node.master: true
+  #指定该节点是否有资格被选举成为node（注意这里只是设置成有资格),默认true
+
+node.data: true
+  # 指定该节点是否存储索引数据，默认为true。
+
+network.bind_host: 0.0.0.0
+  # 设置绑定的ip地址，可以是ipv4或ipv6的，默认为0.0.0.0，绑定这台机器的任何一个ip。
+
+transport.tcp.compress: true
+  # 设置是否压缩tcp传输时的数据，默认为false，不压缩。
+
+http.port: 9200
+  # 设置对外服务的http端口，默认为9200。
+
+http.max_content_length: 100mb
+  # 设置内容的最大容量，默认100mb
+
+cluster.routing.allocation.node_initial_primaries_recoveries: 4
+  # 初始化数据恢复时，并发恢复线程的个数，默认为4。
+
+cluster.routing.allocation.node_concurrent_recoveries: 2
+  # 添加删除节点或负载均衡时并发恢复线程的个数，默认为4。
+
+indices.recovery.max_concurrent_operations: 4
+  # 设置这个参数来限制从其它分片恢复数据时最大同时打开并发流的个数，默认为5。
+
+discovery.zen.minimum_master_nodes: 1
+  # 设置这个参数来保证集群中的节点可以知道其它N个有master资格的节点。默认为1，对于大的集群来说，可以设置大一点的值（2-4）。7.x版本无效
+
+discovery.zen.ping_timeout: 3s
+  # 设置集群中自动发现其它节点时ping连接超时时间，默认为3秒，对于比较差的网络环境可以高点的值来防止自动发现时出错。7.x版本无效
+
+  # discovery.zen.ping.unicast.hosts: ["host1", "host2:port", "host3[portX-portY]"]
+  # 设置集群中master节点的初始列表，可以通过这些节点来自动发现新加入集群的节点。7.x版本无效
+
+#discovery.seed_hosts
+# 在启动此节点时传递要执行发现的主机的初始列表
+#cluster.initial_master_nodes
+# 使用初始的一组符合主节点条件的节点引导集群
+discovery.seed_hosts: ["0.0.0.0"]
+# discovery.seed_providers: ["0.0.0.0"]
+# cluster.initial_master_nodes: ["0.0.0.0"]
