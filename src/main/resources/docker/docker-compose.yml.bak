@@ -1,0 +1,213 @@
+version: '2.2'
+services:
+  mysql:
+    restart: always
+    image: mysql:8.0
+    container_name: mysql
+    privileged: true
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Aa123456
+    volumes:
+      - /data/docker/mysql/conf:/etc/mysql/conf.d
+      - /data/docker/mysql/logs:/logs:rw
+      - /data/docker/mysql/data:/var/lib/mysql:rw
+
+  mssql:
+    restart: always
+    image: mcr.microsoft.com/mssql/server:2019-CU9-ubuntu-16.04
+    container_name: mssql
+    privileged: true
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Aa123456
+    volumes:
+      - /data/docker/mssql/data:/var/opt/mssql/data:rw
+
+  dameng:
+    restart: always
+    image: cesresearch/damengdb:V7.1.5
+    container_name: dameng
+    privileged: true
+    ports:
+      - "5236:5236"
+    volumes:
+      - /data/docker/dameng/data:/data/sdb/dmdata:rw
+
+  postgres:
+    restart: always
+    image: postgres:13
+    container_name: postgres
+    privileged: true
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=Aa123456
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - /data/docker/postgres/data:/var/lib/postgresql/data:rw
+
+  rabbitmq:
+    restart: always
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    privileged: true
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_ERLANG_COOKIE=rabbitcookie
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=Aa123456
+    volumes:
+#      - /data/docker/rabbitmq/etc/:/etc/rabbitmq/
+      - /data/docker/rabbitmq/data:/var/lib/rabbitmq:rw
+      - /data/docker/rabbitmq/logs:/var/log/rabbitmq:rw
+
+  redis:
+    restart: always
+    image: redis:6.0
+    container_name: redis
+    privileged: true
+    ports:
+      - "6379:6379"
+    volumes:
+      - /data/docker/redis/conf/redis.conf:/etc/redis/redis.conf
+      - /data/docker/redis/data:/data:rw
+    command: redis-server /etc/redis/redis.conf --requirepass "Aa123456"
+
+  nginx:
+    restart: always
+    image: nginx:1.21.1
+    container_name: nginx
+    privileged: true
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_HOST=moz-kamen.com
+      - NGINX_PORT=80
+    volumes:
+      - /data/docker/nginx/templates:/etc/nginx/templates
+  
+  zookeeper:
+    restart: always
+    image: zookeeper
+    container_name: zookeeper
+    privileged: true
+    ports:
+      - "2181:2181"
+  
+  openldap:
+    restart: always
+    image: osixia/openldap
+    container_name: openldap
+    privileged: true
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      - LDAP_DOMAIN=moz-kamen.com
+      - LDAP_ADMIN_PASSWORD=Aa123456
+  
+  phpldapadmin:
+    restart: always
+    image: osixia/phpldapadmin
+    container_name: phpldapadmin
+    privileged: true
+    ports:
+      - "10389:80"
+    environment:
+      - TZ=Asia/Shanghai
+      - PHPLDAPADMIN_HTTPS="false"
+      - PHPLDAPADMIN_LDAP_HOSTS=openldap
+    depends_on: 
+      - openldap
+    links:
+      - openldap
+
+  nacos:
+    restart: always
+    image: nacos/nacos-server:2.0.2
+    container_name: nacos
+    privileged: true
+    env_file:
+      - /data/docker/nacos/nacos-standlone-mysql.env
+    volumes:
+      - /data/docker/nacos/custom.properties:/home/nacos/init.d/custom.properties
+      - /data/docker/nacos/logs:/home/nacos/logs:rw
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9555:9555"
+    depends_on:
+      - mysql
+
+  nexus:
+    restart: always
+    image: sonatype/nexus3:3.32.0
+    container_name: nexus
+    privileged: true
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - /data/docker/nexus/data:/sonatype-work:rw
+    ports:
+      - "8081:8081"
+
+  elasticsearch:
+    restart: always
+    image: elasticsearch:7.14.0
+    container_name: elasticsearch
+    privileged: true
+    environment:
+      - ES_JAVA_OPTS=-Xms1024m -Xmx1024m -Xmn512m
+    volumes:
+      - /data/docker/elk/elasticsearch/conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - /data/docker/elk/elasticsearch/data:/usr/share/elasticsearch/data:rw
+      - /data/docker/elk/elasticsearch/logs:/usr/share/elasticsearch/logs:rw
+    ports:
+    - "9200:9200"
+    - "9300:9300"
+
+  kibana:
+    restart: always
+    image: docker.io/kibana:7.14.0
+    container_name: kibana
+    privileged: true
+    volumes:
+      - /data/docker/elk/kibana/conf/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  logstash:
+    restart: always
+    image: logstash:7.14.0
+    container_name: logstash
+    command: logstash -f /usr/share/logstash/config/logstash.conf
+    volumes:
+      - /data/docker/elk/logstash/conf/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - /data/docker/elk/logstash/conf/logstash.conf:/usr/share/logstash/config/logstash.conf
+      - /data/docker/elk/logstash/data:/usr/share/logstash/data:rw
+    ports:
+      - "9600:9600"
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+
+  filebeat:
+    restart: always
+    image: filebeat:7.14.0
+    container_name: filebeat
+    volumes:
+      - /data/docker/elk/filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /data/docker/elk/filebeat/logs:/usr/share/filebeat/logs:rw
+      - /data/docker/elk/filebeat/data:/usr/share/filebeat/data:rw
+    depends_on:
+      - elasticsearch
